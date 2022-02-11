@@ -25,7 +25,7 @@ SECRET_KEY = '5^9a60&&=)-4si2w-j9+=7o5o$yo&&80ix6@xwf_#ky#9v1o@f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['46.219.111.133', '127.0.0.1']
+ALLOWED_HOSTS = ['46.219.111.133', '127.0.0.1', 'ip.ws.126.net']
 
 
 # Application definition
@@ -71,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'telemonstr.wsgi.application'
 
+ASGI_APPLICATION = 'telemonstr.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -131,3 +132,11 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
