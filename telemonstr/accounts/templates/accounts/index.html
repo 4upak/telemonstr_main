@@ -110,6 +110,18 @@
                     </tbody>
                     {% endverbatim %}
                 </table>
+                <div class="action_do_it">
+                <input type="hidden" value="{{ csrf_token }}" name="csrf"/>
+                <select class="form-control" id="select_proxy_action" aria-label="Default select example">
+                    <option selected>Check action with seected accounts</option>
+                    <option value="1">Check selected accounts</option>
+                    <option value="2">Delete selected accounts</option>
+                </select>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Do it!</button>
+                </div>
+            </div>
       </div>
 </div>
 {% endif %}

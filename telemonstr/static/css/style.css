@@ -13,9 +13,9 @@
 
 
 .add_proxy_icon{cursor:pointer}
-.check_proxy_icon, .delete_proxy_icon, .edit_proxy_icon{cursor:pointer}
+.check_proxy_icon, .delete_proxy_icon, .edit_proxy_icon, .delete_account_icon{cursor:pointer}
 #active_proxy_app td.actions div {float:left}
-.delete_proxy_icon{ margin-top:10px}
+.delete_proxy_icon, .delete_account_icon{ margin-top:10px}
 .edit_proxy_icon{margin-top:11px; margin-left:5px}
 span.proxy_id{display:none}
 .add_proxy_icon{margin-top:10px}

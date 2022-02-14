@@ -143,3 +143,27 @@ def accounts_proxy_check(request):
 
     else:
         return JsonResponse({'status': 'error', 'error_message': "request method error", 'index': request.POST['index']})
+
+
+def accounts_delete_active_account(request):
+    if request.method == 'POST':
+        try:
+            account = Telegram_account.objects.filter(pk = request.POST['account_id']).get()
+            session = account.session_file
+        except Exception as ex:
+            return JsonResponse({'status': 'error', 'error_message': "Load Telegram account from databese error", 'index': request.POST['index']})
+        try:
+            shutil.move(f"accounts/sessions/active/{session}.json", f"accounts/sessions/trash/{session}.json")
+            shutil.move(f"accounts/sessions/active/{session}.session", f"accounts/sessions/trash/{session}.session")
+        except Exception as ex:
+            return JsonResponse({'status': 'error', 'error_message': f"{ex} File move error", 'index': request.POST['index']})
+
+        try:
+            Telegram_account.objects.filter(pk = request.POST['account_id']).delete()
+        except Exception as ex:
+            return JsonResponse({'status': 'error', 'error_message': "Database removing error", 'index': request.POST['index']})
+
+        return JsonResponse({'status': 'ok', 'message': f"{session} removed succesfull", 'index': request.POST['index']})
+
+    else:
+        return JsonResponse({'status': 'error', 'error_message': "request method error", 'index': request.POST['index']})

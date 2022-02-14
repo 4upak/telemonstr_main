@@ -8,7 +8,7 @@ function sleep(milliseconds) {
 
 jQuery( document ).ready(function( $ ) {
 
-    //check_all action
+    //check_all accounts for import
     $(document).on("click", '.check_all', function(){
         var index = $('#accounts_app #check_account').index(this)
         var session_file = $('#accounts_app .account_row:eq('+index+') td:eq(1)').text()
@@ -21,6 +21,23 @@ jQuery( document ).ready(function( $ ) {
             }
             else{
                 $('#accounts_app .form-check-input:eq('+i+')').attr("checked","checked")
+            }
+        }
+    })
+
+     //check_all active accounts
+    $(document).on("click", '.check_all', function(){
+        var index = $('#active_accounts_app #check_active_account').index(this)
+        var session_file = $('#active_accounts_app .active_account_row:eq('+index+') td:eq(1)').text()
+        var import_accounts_qty = $('#active_accounts_app .active_account_row').length
+        console.log( import_accounts_qty )
+
+        for (i = 0; i < parseInt(import_accounts_qty); i++) {
+            if( $('#active_accounts_app .form-check-input:eq('+i+')').is(':checked') ){
+                $('#active_accounts_app .form-check-input:eq('+i+')').removeAttr("checked")
+            }
+            else{
+                $('#active_accounts_app .form-check-input:eq('+i+')').attr("checked","checked")
             }
         }
     })
@@ -69,6 +86,42 @@ jQuery( document ).ready(function( $ ) {
             }
         }
     })
+    //deleting active account
+    $(document).on("click", '#active_accounts_app .delete_account_icon', function(){
+        var account_id = $(this).parent().children('.account_id').text()
+        var index = $(this).parent().parent().index('#active_accounts_app .active_account_row')
+        console.log(index)
+
+        data = {
+            'index':index,
+            'account_id':account_id,
+            'csrfmiddlewaretoken': $('input[name=csrf]').val()
+        }
+
+        $.ajax({
+            url: '/accounts/delete/',
+            method: "POST",
+            data: data
+        })
+        .done(function(response){
+            if(response['status']=='ok'){
+                console.log(response)
+                $('#active_accounts_app .active_account_row:eq('+response['index']+')').toggle(300)
+                add_toast('account_delete_'+index, 'Account deleted', 'account with index ' +response['index'] + ' deleted succesfully', 2000)
+                $('.account_delete_'+index).toast('show')
+            }
+            else{
+                console.log(response)
+                add_toast('account_delete_error_'+index, 'Account deleting error', 'account with index ' +response['error_message'] + ' deleting error', 2000)
+                $('.account_delete_error_'+index).toast('show')
+            }
+        })
+        .fail(function(response){
+            console.log("Server error")
+        })
+
+    })
+
 
 
 

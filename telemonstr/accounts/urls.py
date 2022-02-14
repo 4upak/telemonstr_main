@@ -12,5 +12,6 @@ urlpatterns = [
     path('proxy/list/',accounts_proxy_list),
     path('proxy/delete/',accounts_proxy_delete),
     path('proxy/check/',accounts_proxy_check),
+    path('delete/',accounts_delete_active_account),
 
 ]

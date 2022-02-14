@@ -7,27 +7,6 @@ function sleep(milliseconds) {
 }
 
 jQuery( document ).ready(function( $ ) {
-    function add_toast(name, title, message, delay){
-        var toast_data
-        toast_data = '<div id="liveToast" class="toast '+name+' hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="'+delay+'">'
-            toast_data += '<div class="toast-header">'
-                toast_data += '<img src="/static/images/notification.svg" width="30" class="rounded mr-2" alt="...">'
-                toast_data += '<strong class="mr-auto">'+title+'</strong>'
-                toast_data += '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
-                    toast_data += '<span aria-hidden="true">&times;</span>'
-                toast_data += '</button>'
-            toast_data += '</div>'
-            toast_data += '<div class="toast-body">'
-                toast_data += message
-            toast_data += '</div>'
-        toast_data += '</div>'
-        $('.notifications .toasts_stack').append(toast_data)
-        var audio = new Audio('/static/sound/mixkit-sci-fi-reject-notification-896.wav');
-        audio.play();
-
-
-    }
-
     function add_next_tr(current_index){
         var next_tr_index = parseInt(current_index)+1
         $('#proxy_tr'+current_index).after('<tr class="proxy_tr" id="proxy_tr'+next_tr_index+'"><td><div class="form-check"><input class="form-check-input" type="checkbox" id="check_account" name="check_account"></div></td><td scope="col"><input type="text" class="form-control" id="exampleFormControlInput1" name="type" placeholder="Type"></td><td scope="col"><input type="text" class="form-control" id="exampleFormControlInput1" name="host" placeholder="host"></td><td scope="col"><input type="text" class="form-control" id="exampleFormControlInput1" name="port" placeholder="Port"></td><td scope="col"><input type="text" class="form-control" id="exampleFormControlInput1" name="login" placeholder="Login"></td><td scope="col"><input type="text" class="form-control" id="exampleFormControlInput1" name="pass" placeholder="Pass"></td><td scope="col"><img src="/static/images/plus.svg" width="20" class="add_proxy_icon"></td></td>')
