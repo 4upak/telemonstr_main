@@ -2,13 +2,18 @@ from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 import json
 from .telethon_functions import account_controller
 
+from .tasks import start_account_controller
+
 class AccountsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.account_id = self.scope['url_route']['kwargs']['account_id']
         print(self.account_id)
         print(self.channel_name)
         await self.channel_layer.group_add(self.account_id, self.channel_name)
+        start_account_controller.delay('1')
+
         await self.accept()
+
 
 
 

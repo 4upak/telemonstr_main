@@ -132,8 +132,15 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = 'localhost'
 REDIS_POST = '6379'
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_TRANSPORT_OPTION = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST +':' + REDIS_POST + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 CHANNEL_LAYERS = {
     "default": {
@@ -145,9 +152,6 @@ CHANNEL_LAYERS = {
 }
 
 
-CELERY_BROCKER_URL = 'redis://' + REDIS_HOST +':' + REDIS_POST + '/0'
-CELERY_BROCKER_TRANSPORT_OPTION = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST +':' + REDIS_POST + '/0'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+
+
+
