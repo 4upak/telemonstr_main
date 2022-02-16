@@ -7,10 +7,10 @@ import time
 @app.task
 def start_account_controller(account_id):
     channel_layer = get_channel_layer()
-    for i in range(10):
-        print(f'iteractio {i} for {account_id} account_id')
+
+    for i in range(3):
         async_to_sync(channel_layer.group_send)(
-            '1',
+            account_id,
             {
                 'type': 'account.message',
                 'text': f'iteractio {i} for {account_id} account_id'
@@ -18,4 +18,4 @@ def start_account_controller(account_id):
 
         )
         time.sleep(10)
-    return json.dumps({'status': 'ok'})
+    return json.dumps({'status': 'ok', 'account_id':account_id})

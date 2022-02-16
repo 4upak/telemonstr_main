@@ -10,7 +10,7 @@ class AccountsConsumer(AsyncWebsocketConsumer):
         print(self.account_id)
         print(self.channel_name)
         await self.channel_layer.group_add(self.account_id, self.channel_name)
-        start_account_controller.delay('1')
+        start_account_controller.delay(self.account_id)
 
         await self.accept()
 

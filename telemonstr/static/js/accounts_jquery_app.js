@@ -122,6 +122,65 @@ jQuery( document ).ready(function( $ ) {
 
     })
 
+    $(document).on("click", '#active_accounts_app .check_account_icon', function(){
+        var account_id = $(this).parent().children('.account_id').text()
+        var index = $(this).parent().parent().index('#active_accounts_app .active_account_row')
+
+        console.log(account_id + ' starting')
+        $('.active_account_row:eq('+index+') .check_account_icon img').attr('src', '/static/images/toggle-on.svg')
+        $('.active_account_row:eq('+index+')').css('background-color', '#d4edda')
+        add_ws_toast('ws_account_'+account_id, 'Account starting', 'Account  ' + account_id + ' starting', 2000)
+        $('.ws_account_'+account_id).toast('show')
+        var socket_url = "ws://46.219.111.133:8000/ws/accounts/"+account_id+"/"
+        console.log(socket_url)
+
+        window['socket_' + account_id] = new WebSocket(socket_url)
+        window['socket_' + account_id].onopen = function() {
+            $('.ws_account_'+account_id+' .toast-body').html("Соединение установлено.")
+            console.log("Соединение установлено.")
+        }
+
+        window['socket_' + account_id].onclose = function(event) {
+          if (event.wasClean) {
+            console.log('Соединение закрыто чисто');
+            $('.ws_account_'+account_id).toast('hide')
+          } else {
+            console.log('Обрыв соединения'); // например, "убит" процесс сервера
+            $('.ws_account_'+account_id).toast('hide')
+          }
+          console.log('Код: ' + event.code + ' причина: ' + event.reason);
+        }
+
+        window['socket_' + account_id].onmessage = function(event) {
+            $('.ws_account_'+account_id+' .toast-body').prepend("<li>"+event.data+"</li>")
+        }
+
+        window['socket_' + account_id].onerror = function(error) {
+          alert("Ошибка " + error.message)
+          $('.ws_account_'+account_id+' .toast-body').append("<li>Ошибка " + error.message+"</li>")
+        }
+
+
+
+    })
+
+    $(document).on("click", '#check_active_account', function(){
+        var account_id = $(this).parent().parent().parent().find('.account_id').text()
+        console.log(account_id)
+        window['socket_' + account_id].send('{"message":"hello"}')
+
+    })
+    $(document).on("click", '.ws_notifacation .toast button', function(){
+        var str = $(this).parent().parent().attr('class')
+
+        var found = str.match(/_(\d*) /i)
+        var account_id = found[1]
+        window['socket_' + account_id].close()
+        $('.ws_account_'+account_id).remove()
+
+    })
+
+
 
 
 

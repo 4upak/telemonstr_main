@@ -101,13 +101,24 @@ jQuery( document ).ready(function( $ ) {
         .done(function(response){
             if(response['status']=='ok'){
                 console.log(response)
-
-                $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') .check_proxy_icon').html('<img src="/static/images/toggle-on.svg" width="50">')
-
-
-                add_toast('check_proxy_'+index, 'Proxy checked', 'Proxy with index ' +response['index'] + ' checked succesfully', 2000)
-                $('.check_proxy_'+index).toast('show')
+                if(response['result'] == true){
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') .check_proxy_icon').html('<img src="/static/images/toggle-on.svg" width="50">')
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+')').css('background-color', '#d4edda')
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+')').css('border-color', '#f5c6cb')
+                    var checked_proxy_host =  $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') td:eq(2)').text()
+                    add_toast('check_proxy_'+index, 'Proxy checked', 'Proxy ' +checked_proxy_host + ' checked succesfully and it is active now', 2000)
+                    $('.check_proxy_'+index).toast('show')
+                }
+                else{
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') .check_proxy_icon').html('<img src="/static/images/toggle-off.svg" width="50">')
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+')').css('background-color', '#f8d7da')
+                    $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+')').css('border-color', '#f5c6cb')
+                    var checked_proxy_host =  $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') td:eq(2)').text()
+                    add_toast('check_proxy_'+index, 'Proxy checked', 'Proxy ' + checked_proxy_host+ ' is not active now', 2000)
+                    $('.check_proxy_'+index).toast('show')
+                }
             }
+
             else{
                 console.log(response)
                 add_toast('check_proxy_error_'+index, 'Proxy checking error', 'Proxy with index ' +response['error_message'] + ' checked succesfully', 2000)

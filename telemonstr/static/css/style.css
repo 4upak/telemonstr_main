@@ -108,3 +108,9 @@ body {
 }
 span.account_id{display:none}
 td.actions div{float:left}
+
+.check_account_icon{ cursor:pointer}
+.ws_notifacation .toast-body{
+    max-height:100px; overflow:scroll;
+    min-width:300px
+}
