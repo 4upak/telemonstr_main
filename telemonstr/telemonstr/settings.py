@@ -80,9 +80,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'telemonstr',
-        'USER': 'root',
-        'PASSWORD': '201088',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'USER': 'outside',
+        'PASSWORD': 'Ys582S]X:klp',
+        'HOST': '46.219.111.133',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
