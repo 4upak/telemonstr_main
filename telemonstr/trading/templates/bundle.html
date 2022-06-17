@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+<br>
+<br>
+{{step_three}}<br>
+<div id="bundle_app">
+    <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col"><input type="text" value="{{step_one}}"/></th>
+                    <th scope="col"><input type="text" value="{{step_two}}"/></th>
+                    <th scope="col"><input type="text" value="{{step_three}}"/></th>
+                    <th scope="col">Profitability, %</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr class="trading_bundle" >
+                    <td>{{step_one}}</td>
+                    <td>{{step_two}}</td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+                </tbody>
+
+            </table>
+</div>
+
+
+{% endblock %}
+{% block javascript %}
+
+
+
+<script src="/static/js/trading_app.js"></script>
+
+
+
+{% endblock %}

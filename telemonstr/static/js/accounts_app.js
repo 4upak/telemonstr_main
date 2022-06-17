@@ -18,9 +18,14 @@ new Vue({
     },
     created: function(){
         const vm = this;
-        axios.get('/accounts/api/active_accounts').then(function(response){
-            vm.active_accounts = response.data
+        axios.get('/accounts/api/active_accounts').then(
+            function(response){
+                vm.active_accounts = response.data
+            }
+        ).catch(err => 1{
+            console.log(err)
         })
+
     }
 })
 

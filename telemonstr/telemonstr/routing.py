@@ -1,5 +1,6 @@
 from channels.routing import ProtocolTypeRouter, URLRouter
-from accounts.routing import websocket_urls
+#from accounts.routing import websocket_urls
+from trading.routing import websocket_urls
 
 application = ProtocolTypeRouter({
     "websocket": URLRouter(

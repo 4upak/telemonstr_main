@@ -55,7 +55,7 @@ jQuery( document ).ready(function( $ ) {
             }
             console.log(data)
             $.ajax({
-                url: '/accounts/proxy/add/',
+                url: 'add/',
                 method: "POST",
                 data: data
             })
@@ -94,7 +94,7 @@ jQuery( document ).ready(function( $ ) {
 
         }
         $.ajax({
-            url: '/accounts/proxy/check/',
+            url: 'check/',
             method: "POST",
             data: data
         })
@@ -121,7 +121,9 @@ jQuery( document ).ready(function( $ ) {
 
             else{
                 console.log(response)
-                add_toast('check_proxy_error_'+index, 'Proxy checking error', 'Proxy with index ' +response['error_message'] + ' checked succesfully', 2000)
+                add_toast('check_proxy_error_'+index, 'Proxy checking error', 'Proxy with index ' +response['index'] + ' is not active', 3000)
+                $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+') .check_proxy_icon').html('<img src="/static/images/toggle-off.svg" width="50">')
+                $('#active_proxy_app tr.active_proxy_row:eq('+response['index']+')').css('background-color', '#f8d7da')
                 $('.check_proxy_error_'+index).toast('show')
             }
         })
@@ -154,11 +156,12 @@ jQuery( document ).ready(function( $ ) {
         data = {
             'id':proxy_id,
             'index':index,
+            headers: {'X-CSRFToken': csrftoken},
             'csrfmiddlewaretoken': $('input[name=csrf]').val()
 
         }
         $.ajax({
-            url: '/accounts/proxy/delete/',
+            url: 'delete/',
             method: "POST",
             data: data
         })

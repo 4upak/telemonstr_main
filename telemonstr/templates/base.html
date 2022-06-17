@@ -6,11 +6,15 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous">
+        <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <title>{% block title %}Telemonstr project{% endblock %}</title>
         <link rel="stylesheet" href="/static/css/style.css" data-n-g=""/>
 
+        <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
                 integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -18,17 +22,23 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+
         <script src="/static/js/main.js"></script>
+
     </head>
     <body>
-    <div class="nav-scroller bg-body shadow-sm">
+    <div id="app"></div>
+
+    <!--<div class="nav-scroller bg-body shadow-sm">
         {% include 'inc/_nav.html' %}
-    </div>
+    </div>-->
     <main class="container">
         {% block content %}Telemonstr content{% endblock %}
         <div class="notifications">
             <div class="position-fixed toasts_stack bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+
             </div>
         </div>
 
@@ -45,7 +55,6 @@
     {% include 'inc/_footer.html' %}
 
     {% block javascript %}javascript files{% endblock %}
-
 
     </body>
     </html>

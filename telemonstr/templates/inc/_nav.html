@@ -40,14 +40,18 @@
             <span class="badge badge-pill bg-light align-text-bottom">{{ active_account_qty }}</span>
             {% endif %}
         </a>
-        <a class="nav-link" href="/accounts/proxy">Proxy
+        <a class="nav-link" href="/proxy/">Proxy
             {% if active_proxy_qty > 0 %}
             <span class="badge badge-pill bg-light align-text-bottom">{{ active_proxy_qty }}</span>
             {% endif %}
         </a>
         <a class="nav-link" href="#">Registar</a>
         <a class="nav-link" href="#">Inviter</a>
-        <a class="nav-link" href="#">Funnels</a>
+        <a class="nav-link" href="/funnels/">Funnels
+            {% if active_funnels_qty > 0 %}
+            <span class="badge badge-pill bg-light align-text-bottom">{{ active_funnels_qty }}</span>
+            {% endif %}
+        </a>
         <a class="nav-link" href="#">Sender</a>
     </nav>
 </>

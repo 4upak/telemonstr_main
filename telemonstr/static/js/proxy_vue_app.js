@@ -5,7 +5,7 @@ new Vue({
     },
     created: function(){
         const vm = this;
-        axios.get('/accounts/proxy/list/').then(function(response){
+        axios.get('/proxy/list/').then(function(response){
             vm.active_proxy_list = response.data
             console.log(response.data)
         })

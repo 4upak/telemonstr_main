@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +26,11 @@ SECRET_KEY = '5^9a60&&=)-4si2w-j9+=7o5o$yo&&80ix6@xwf_#ky#9v1o@f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['46.219.111.133', '127.0.0.1', 'ip.ws.126.net']
+ALLOWED_HOSTS = ['46.219.111.133', '127.0.0.1', 'ip.ws.126.net','192.168.1.6']
 
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'X-CSRFTOKEN',
+]
 
 # Application definition
 
@@ -38,7 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'channels'
+    'funnels.apps.FunnelsConfig',
+    'proxy.apps.ProxyConfig',
+    'channels',
+    'django_extensions',
+    'rest_framework',
+    'p2p',
+    'trading'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +66,7 @@ ROOT_URLCONF = 'telemonstr.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),os.path.join(BASE_DIR, 'p2p/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,7 +147,7 @@ REDIS_POST = '6379'
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_BROKER_TRANSPORT_OPTION = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST +':' + REDIS_POST + '/0'
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_POST + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -146,12 +156,38 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(REDIS_HOST , REDIS_POST)],
+            "hosts": [(REDIS_HOST, REDIS_POST)],
         },
     },
 }
+SHELL_PLUS = "ipython"
 
+SHELL_PLUS_PRINT_SQL = True
 
+NOTEBOOK_ARGUMENTS = [
+    "--ip",
+    "0.0.0.0",
+    "--port",
+    "8888",
+    "--allow-root",
+    "--no-browser",
+]
 
+IPYTHON_ARGUMENTS = [
+    "--ext",
+    "django_extensions.management.notebook_extension",
+    "--debug",
+]
 
+IPYTHON_KERNEL_DISPLAY_NAME = "Django Shell-Plus"
+
+SHELL_PLUS_POST_IMPORTS = [ # extra things to import in notebook
+    ("module1.submodule", ("func1", "func2", "class1", "etc")),
+    ("module2.submodule", ("func1", "func2", "class1", "etc"))
+
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true" # only use in development
 

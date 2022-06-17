@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% verbatim %}
+<div id="edit_funnel_app">
+      <div class="mb-2">
+        <button class="btn btn-primary" @click="collapseAll">collapse all</button>
+        <button class="btn btn-primary ml-1" @click="expandAll">expand all</button>
+      </div>
+      <Tree :data="tree1data" draggable="draggable" cross-tree="cross-tree">
+        <div slot-scope="{data, store}">
+          <template v-if="!data.isDragPlaceHolder"><b v-if="data.children &amp;&amp; data.children.length" @click="store.toggleOpen(data)">{{ data.open ? '-' : '+' }}&nbsp;</b><span>{{ data.text }}</span></template>
+        </div>
+      </Tree>
+
+
+</div>
+{% endverbatim %}
+
+
+
+<input type="hidden" value="{{ csrf_token }}" name="csrf" id="csrf" type="hidden"/>
+<input type="text" value = "{{ funnel_id }}" name="funnel_id" id="funnel_id" type="hidden" style="display:none"/>
+
+<form id="funnel_units_form" _lpchecked="1"><div class="form-group"><label for="user_name">User id</label><input type="text" class="form-control" id="user_name" aria-describedby="emailHelp" required="" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off"></div><div class="form-group"><label for="funnel_unit_message">Unit message</label><textarea class="form-control" id="funnel_unit_message" rows="3" required=""></textarea></div><div class="custom-file mb-3 form-group"><label for="funnel_image">Image file</label><input type="file" class="custom-file-input" id="funnel_image"><label class="custom-file-label" for="funnel_image">Choose file...</label><div class="invalid-feedback">Example invalid custom file feedback</div></div><div class="form-group"><label for="delay_before">Daley before</label><input type="text" class="form-control" id="delay_before" aria-describedby="emailHelp" value="0"></div><div class="form-group"><label for="delay_after">Delay after</label><input type="text" class="form-control" id="delay_after" aria-describedby="emailHelp" value="0"></div><div class="col-auto"><button type="submit" class="btn btn-primary mb-3">Add unit</button></div></form>
+
+{% endblock %}
+{% block javascript %}
+<script src="/static/js/bootstrap-validate.js" ></script>
+<script src="https://unpkg.com/vue-draggable-nested-tree@3.0.0-beta2/dist/vue-draggable-nested-tree.js" ></script>
+<script src="https://unpkg.com/tree-helper@latest/dist/tree-helper.js" ></script>
+<script src="/static/js/edit_funnels_app.js" ></script>
+
+
+{% endblock %}

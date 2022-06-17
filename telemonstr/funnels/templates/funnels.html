@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div id="active_funnels_app">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
+                <img class="mr-3" src="/static/images/proxy_icon.png" alt="" height="60">
+                <div class="lh-100">
+                    <h6 class="mb-0 text-white lh-100">Active Funnels List</h6>
+                    <small>Active funnels area</small>
+                </div>
+            </div>
+
+            <div class="active_funnel_area">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    {% verbatim %}
+                    <tbody>
+                    <tr class="active_funnel_row" v-for="active_funnel in active_funnels_list" :key="active_funnel.id">
+                        <td>{{ active_funnel.id }}</td>
+                        <td>{{ active_funnel.funnel_name }}</td>
+                        <td class="actions">
+                            <span class="funnel_id">{{ active_funnel.id }}</span>
+                            <div class="edit_funnel_icon"><a :href="'/funnels/edit/'+active_funnel.id"><img src="/static/images/383148_edit_icon.svg" width="20"/></a></div>
+                            <div class="delete_funnel_icon" v-on:click = "funnel_delete(active_funnel.id)"><img src="/static/images/close.svg" width="30"/></a></div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                    {% endverbatim %}
+                </table>
+            </div>
+            <div class="creating_funnel_area">
+                <div class="create_funnel_name">
+                        <form class="create_funnel_name_form" @submit.prevent="funnel_add">
+                        <div class="form-group">
+                            <label for="funnel_name">Create funnel</label>
+                            <input type="text" class="form-control" id="funnel_name" required
+                                v-model="new_funnel_name"
+                            >
+                            <small id="emailHelp" class="form-text text-muted">Set funnel name</small>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Start funnel craeting</button>
+                        </div>
+                        </form>
+                </div>
+                <input type="hidden" value="{{ csrf_token }}" name="csrf"/>
+            </div>
+
+        </div>
+
+
+    </div>
+{% endblock %}
+{% block javascript %}
+<script src="/static/js/bootstrap-validate.js" ></script>
+<script src="/static/js/funnels_vue_app.js"></script>
+<script src="/static/js/accounts_funnels_app.js"></script>
+
+
+
+
+
+{% endblock %}

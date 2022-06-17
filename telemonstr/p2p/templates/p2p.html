@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div id="active_funnels_app">
+
+{{ current_url }}
+
+
+
+</div>
+
+<h1>BUY {{data.0.0.fiat}} -> {{data.0.0.crypto}}</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Биржа</th>
+      <th scope="col">Крипта</th>
+      <th scope="col">Фиат</th>
+      <th scope="col">Банк</th>
+      <th scope="col">Стакан, {{ crypto }}</th>
+      <th scope="col">Топ5 курс, {{ fiat }}</th>
+      <th scope="col">Спред топ5, {{ fiat }}</th>
+      <th scope="col">Оптим. курс, {{ fiat }}</th>
+      <th scope="col">Спред, {{ fiat }}</th>
+        <th scope="col">Спред %</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for stock in data %}
+    {% for item in stock %}
+        {% if item.type == 'sell' %}
+        <tr>
+            <td>{{item.stock}}</td>
+            <td>{{item.crypto}}</td>
+            <td>{{item.fiat}}</td>
+            <td>{{item.bank}}</td>
+            <td>{{item.avg.total_crypto}} </td>
+            <td>{{item.top5.avg_price}} </td>
+            <td>{{item.spread_top5}} </td>
+            <td>{{item.optimal.avg_price}} </td>
+            <td>{{item.spread}} </td>
+            <td>{{item.spread_percent}} %</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+
+<h1>SELL {{data.0.0.crypto}} -> {{data.0.0.fiat}}</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Биржа</th>
+      <th scope="col">Крипта</th>
+      <th scope="col">Фиат</th>
+      <th scope="col">Банк</th>
+      <th scope="col">Стакан, {{ crypto }}</th>
+      <th scope="col">Топ5 курс, {{ fiat }}</th>
+      <th scope="col">Спред топ5, {{ fiat }}</th>
+      <th scope="col">Оптим. курс, {{ fiat }}</th>
+      <th scope="col">Спред, {{ fiat }}</th>
+        <th scope="col">Спред %</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for stock in data %}
+    {% for item in stock %}
+        {% if item.type == 'buy' %}
+        <tr>
+            <td>{{item.stock}}</td>
+            <td>{{item.crypto}}</td>
+            <td>{{item.fiat}}</td>
+            <td>{{item.bank}}</td>
+            <td>{{item.avg.total_crypto}} </td>
+            <td>{{item.top5.avg_price}} </td>
+            <td>{{item.spread_top5}} </td>
+            <td>{{item.optimal.avg_price}} </td>
+            <td>{{item.spread}} </td>
+            <td>{{item.spread_percent}} %</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+{% block javascript %}
+
+
+
+
+
+
+{% endblock %}

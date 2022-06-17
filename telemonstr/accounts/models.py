@@ -1,4 +1,5 @@
 from django.db import models
+from proxy.models import Proxy
 
 class Telegram_account(models.Model):
 
@@ -6,7 +7,8 @@ class Telegram_account(models.Model):
     session_file = models.CharField(max_length = 100, unique=True)
     created_at = models.DateTimeField(auto_now_add = True)
     register_time = models.IntegerField(default = 0)
-    proxy = models.GenericIPAddressField(protocol='IPv4', unpack_ipv4=False, null=True)
+    #proxy = models.GenericIPAddressField(protocol='IPv4', unpack_ipv4=False, null=True)
+    proxy = models.ForeignKey(Proxy,models.SET_NULL,blank=True,null=True)
     first_name = models.CharField(max_length = 250, default='-', null=True)
     last_name = models.CharField(max_length = 250, default='-', null=True)
     last_check_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
@@ -22,12 +24,7 @@ class Telegram_account(models.Model):
     invite_restricted = models.BooleanField(default=0)
     message_restricted = models.BooleanField(default=0)
 
-class Proxy(models.Model):
 
-    type = models.CharField(max_length = 20)
-    host = models.GenericIPAddressField(unique=True)
-    port = models.CharField(max_length = 20)
-    login = models.CharField(max_length = 100)
-    password = models.CharField(max_length = 255)
+
 
 

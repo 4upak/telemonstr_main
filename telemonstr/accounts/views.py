@@ -11,15 +11,26 @@ from django.http import JsonResponse
 import glob
 from django.core import serializers
 from .models import Telegram_account
-from .models import Proxy
+from proxy.models import Proxy
+from funnels.models import Funnel
+import re
 
 
 def accounts_main_page(request):
     file_qty = len(glob.glob('accounts/sessions/import/*.session'))
     active_account_qty = Telegram_account.objects.count()
     active_proxy_qty = Proxy.objects.count()
+    active_funnels_qty = Funnel.objects.count()
 
-    return render(request, 'accounts/index.html', {'title': "Аккаунты заголовок", 'file_qty':file_qty, 'active_account_qty': active_account_qty,'active_proxy_qty':active_proxy_qty})
+    data = {
+        'title': "Аккаунты заголовок",
+        'file_qty': file_qty,
+        'active_account_qty': active_account_qty,
+        'active_proxy_qty': active_proxy_qty,
+        'active_funnels_qty': active_funnels_qty
+    }
+
+    return render(request, 'accounts/index.html', data)
 
 def accounts_import_page(request):
 
@@ -84,65 +95,6 @@ def accounts_api_page(request):
             data.append(ex)
     return HttpResponse(json.dumps(data))
 
-def accounts_proxy_page(request):
-    active_account_qty = Telegram_account.objects.count()
-    active_proxy_qty = Proxy.objects.count()
-    return render(request, 'accounts/proxy.html',{'title': "Active proxy list", 'active_proxy_qty':active_proxy_qty, 'active_account_qty': active_account_qty})
-
-def accounts_proxy_add(request):
-    if request.method == 'POST':
-        try:
-            proxy = Proxy(
-                type = request.POST['type'],
-                host = request.POST['host'],
-                port = int(request.POST['port']),
-                login = request.POST['login'],
-                password = request.POST['pass']
-            )
-            proxy.save()
-            return JsonResponse({'status': 'ok', 'error_message': "Proxy created!", 'index': request.POST['index']})
-        except Exception as ex:
-            return JsonResponse({'status': 'error', 'error_message': f"{ex} - data saving error", 'index': request.POST['index']})
-    else:
-        return JsonResponse({'status': 'error', 'error_message': "request method error"})
-
-def accounts_proxy_list(request):
-    return HttpResponse(serializers.serialize("json", Proxy.objects.all()))
-
-def accounts_proxy_delete(request):
-    if request.method == 'POST':
-        try:
-            Proxy.objects.filter(pk = request.POST['id']).delete()
-            return JsonResponse({'status': 'ok', 'message': f"Proxy id:{request.POST['id']} deleted", 'index':request.POST['index']})
-        except Exception as ex:
-            return JsonResponse(
-                {'status': 'error', 'message': f"{ex} - Proxy id:{request.POST['id']} deleteting error", 'index': request.POST['index']})
-    else:
-        return JsonResponse({'status': 'error', 'error_message': "request method error"})
-
-
-def accounts_proxy_check(request):
-    if request.method == 'POST':
-        import requests
-        result = False
-        proxy = Proxy.objects.filter(pk = request.POST['id']).get()
-        if proxy.type == 'socks5':
-            try:
-                requests.get('https://google.com', proxies=dict(
-                    https=f'{proxy.type}://{proxy.login}:{proxy.password}@{proxy.host}:{proxy.port}',
-                    http=f'{proxy.type}://{proxy.login}:{proxy.password}@{proxy.host}:{proxy.port}'
-                ), verify=True, timeout=20)
-                result = True
-            except Exception as ex:
-                print(ex)
-                result = False
-        else:
-            return JsonResponse({'status': 'error', 'error_message': "proxy type error", 'index': request.POST['index']})
-
-        return JsonResponse({'status': 'ok', 'error_message': "proxy checked", 'result':result, 'index': request.POST['index']})
-
-    else:
-        return JsonResponse({'status': 'error', 'error_message': "request method error", 'index': request.POST['index']})
 
 
 def accounts_delete_active_account(request):
@@ -167,3 +119,4 @@ def accounts_delete_active_account(request):
 
     else:
         return JsonResponse({'status': 'error', 'error_message': "request method error", 'index': request.POST['index']})
+
