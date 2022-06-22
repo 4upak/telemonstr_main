@@ -15,7 +15,7 @@ class BundleSerializer(ModelSerializer):
 
     class Meta:
         model = Bundle
-        fields = ['start_symbol', 'one_step','two_step', 'final_step','profitability','time_ago']
+        fields = ['pk','start_symbol', 'one_step','two_step', 'final_step','profitability','time_ago']
 
 class BinancePairSerializer(ModelSerializer):
     class Meta:
@@ -26,14 +26,20 @@ class BinancePairRelatedField(serializers.RelatedField):
     def to_representation(self, value):
         return {
             'name': value.symbol,
-            'id':value.pk
+            'id':value.pk,
+            'price':0,
+            'base_asset':value.base_asset
         }
 
 class BinanceBundleSerializer(ModelSerializer):
     first_pair = BinancePairRelatedField(read_only=True,many=False)
     second_pair = BinancePairRelatedField(read_only=True,many=False)
     third_pair = BinancePairRelatedField(read_only=True,many=False)
+    profitability = serializers.SerializerMethodField('get_zero')
+
+    def get_zero(self, binance_bundle_object):
+        return 0
 
     class Meta:
         model = BinanceBudle
-        fields = ['start_stop_symbol', 'first_pair','second_pair', 'third_pair']
+        fields = ['pk','start_stop_symbol', 'first_pair','second_pair', 'third_pair', 'first_step_symbol', 'second_step_symbol','profitability']

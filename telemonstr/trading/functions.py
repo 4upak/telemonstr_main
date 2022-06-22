@@ -13,6 +13,8 @@ import time
 import websocket
 from .tasks import *
 from django.db.models import Q
+from random import randrange
+from functools import partial
 
 api_key = ''
 api_secret = ''
@@ -159,13 +161,48 @@ def binance_torg():
         print(ex)
         return 0
 
-def start_socket(symbol):
-    def on_message(ws, message):
+def start_socket(pair):
+    def on_message(ws, message, pk):
         data = json.loads(message)
-        print(data)
+        if data['s'] == 'ETHUSDT':
+            if randrange(1,10) == 5:
+                ws_log('streaming.message', 'all', {'symbol':data['s'], 'price':data['p'], 'pk':pk})
+        elif data['s'] == 'BTCUSDT':
+            if randrange(1,10) == 5:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
 
-        ws_log('streaming.message', 'all', data)
-        ws_log('streaming.message', symbol, data)
+        elif data['s'] == 'BTCBUSD':
+            if randrange(1,10)%3 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'ETHBUSD':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'BUSDUSDT':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'USDCUSDT':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'BNBUSDT':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'ETHBTC':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        elif data['s'] == 'ADAUSDT':
+            if randrange(1,10)%2 == 0:
+                ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+        else:
+            ws_log('streaming.message', 'all', {'symbol': data['s'], 'price': data['p'], 'pk':pk})
+
+
 
 
 
@@ -178,8 +215,8 @@ def start_socket(symbol):
     def on_open(ws):
         print("### connected ###")
 
-    ws = websocket.WebSocketApp(f"wss://stream.binance.com:9443/ws/{symbol.lower()}@aggTrade",
-                                on_message=on_message,
+    ws = websocket.WebSocketApp(f"wss://stream.binance.com:9443/ws/{pair['symbol'].lower()}@aggTrade",
+                                on_message=partial(on_message, pk=pair['pk']),
                                 on_error=on_error,
                                 on_close=on_close)
     ws.on_open = on_open
@@ -190,7 +227,6 @@ def start_sockets():
     from threading import Thread
 
     pairs = BinancePair.objects.all()
-
     bundles = BinanceBudle.objects.all()
     pairs = []
     for bundle in bundles:
@@ -238,7 +274,9 @@ def build_binance_bundles(start):
                     if start == next_next_next:
                         bundle = BinanceBudle(
                             start_stop_symbol = start,
+                            first_step_symbol = next,
                             first_pair = first_step_pair,
+                            second_step_symbol = next_next,
                             second_pair = second_step_pair,
                             third_pair = third_step_pair,
                         )
@@ -258,3 +296,17 @@ def build_binance_bundles(start):
 
     '''for bundle in bundles:
         print(f"{bundle['first']} -> {bundle['second']} -> {bundle['third']}")'''
+
+def channge_assets():
+    f = open('trading/bundles.txt', 'r')
+    lines = f.readlines()
+    for symbol in lines:
+        symbol = symbol.replace('\n','')
+        pair = BinancePair.objects.filter(symbol=symbol).first()
+        buf = pair.base_asset
+        pair.base_asset = pair.second_asset
+        pair.second_asset = buf
+        pair.save()
+
+
+    f.close()

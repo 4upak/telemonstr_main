@@ -2,8 +2,7 @@ from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 import json
 from trading.models import BinancePair
 from .models import Bundle
-
-from .tasks import start_trading_controller
+from .tasks import *
 
 class TradingConsumer(AsyncWebsocketConsumer):
     async def connect(self):

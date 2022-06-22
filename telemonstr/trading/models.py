@@ -25,5 +25,7 @@ class BinancePair(models.Model):
 class BinanceBudle(models.Model):
     start_stop_symbol = models.CharField(max_length = 20, null=False, default='-')
     first_pair = models.ForeignKey(BinancePair, on_delete=models.PROTECT, related_name='first_pair')
+    first_step_symbol = models.CharField(max_length = 20, null=False, default='-')
     second_pair = models.ForeignKey(BinancePair, on_delete=models.PROTECT, related_name='second_pair')
+    second_step_symbol = models.CharField(max_length = 20, null=False, default='-')
     third_pair = models.ForeignKey(BinancePair, on_delete=models.PROTECT, related_name='third_pair')

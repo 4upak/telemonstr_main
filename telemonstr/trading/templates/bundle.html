@@ -7,26 +7,70 @@
 <br>
 {{step_three}}<br>
 <div id="bundle_app">
-    <table class="table table-striped">
-                <thead>
+
+    <table class="table">
+                <thead class="thead-dark">
                 <tr>
-                    <th scope="col"><input type="text" value="{{step_one}}"/></th>
-                    <th scope="col"><input type="text" value="{{step_two}}"/></th>
-                    <th scope="col"><input type="text" value="{{step_three}}"/></th>
+
+                    <th scope="col">Step1</th>
+                    <th scope="col">Step2</th>
+                    <th scope="col">Step3</th>
                     <th scope="col">Profitability, %</th>
                 </tr>
                 </thead>
-
+                {% verbatim %}
                 <tbody>
-                <tr class="trading_bundle" >
-                    <td>{{step_one}}</td>
-                    <td>{{step_two}}</td>
-                    <td>0</td>
-                    <td></td>
+                <tr class="trading_funnel_row">
+                    <td>
+                        <div style="width:200px; overflow:hidden">
+                        <span class="pair_price">{{ trading_funnel.first_pair.name }}:<br>
+                            <span class="pair_price_value">{{ trading_funnel.first_pair.price }}</span></span><br>
+                        <hr>
+                        <span id="price">{{ trading_funnel.start_stop_symbol }} -> {{ trading_funnel.first_step_symbol }}: </span>{{ trading_funnel.first_pair.real_price }}
+                        <hr>
+                        {{ trading_funnel.first_bill }}{{ trading_funnel.first_step_symbol }}
+                        <hr>
+                        Объем: {{ trading_funnel.first_pair.amount }} {{ trading_funnel.first_pair.base_asset }}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:200px; overflow:hidden">
+                        <span class="pair_price">{{ trading_funnel.second_pair.name }}:<br>
+                            <span class="pair_price_value">{{ trading_funnel.second_pair.price }}</span></span><br>
+                        <hr>
+                        <span id="price">{{ trading_funnel.first_step_symbol }} -> {{ trading_funnel.second_step_symbol }}: </span>{{ trading_funnel.second_pair.real_price }}
+                        <hr>
+                        {{ trading_funnel.second_bill }}{{ trading_funnel.second_step_symbol }}
+                        <hr>
+                        Объем: {{ trading_funnel.second_pair.amount }} {{ trading_funnel.second_pair.base_asset }}
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="width:200px; overflow:hidden">
+                        <span class="pair_price">{{ trading_funnel.third_pair.name }}:<br>
+                            <span class="pair_price_value">{{ trading_funnel.third_pair.price }}</span></span><br>
+                        <hr>
+                        <span id="price">{{ trading_funnel.second_step_symbol }} -> {{ trading_funnel.start_stop_symbol }}: </span>{{ trading_funnel.third_pair.real_price }}
+                        <hr>
+                        {{ trading_funnel.third_bill }}*{{ trading_funnel.start_stop_symbol }}
+                        <hr>
+                        Объем: {{ trading_funnel.third_pair.amount }} {{ trading_funnel.third_pair.base_asset }}
+                        </div>
+                    </td>
+
+                    <td>
+                        <div style="width:200px; overflow:hidden">
+                            profit_amount: {{trading_funnel.profit_amount}}<br>
+                            comittion:{{trading_funnel.comittion}}<br>
+                            profitability:{{ trading_funnel.profitability }}
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
-
+                {% endverbatim %}
             </table>
+
 </div>
 
 
@@ -35,7 +79,7 @@
 
 
 
-<script src="/static/js/trading_app.js"></script>
+<script src="/static/js/bundle_app.js"></script>
 
 
 

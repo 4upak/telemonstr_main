@@ -20,14 +20,6 @@ class TradingBinanceBundles(ModelViewSet):
     queryset = BinanceBudle.objects.all()
     serializer_class = BinanceBundleSerializer
 
-def trading_bundle(request, bundle):
-    step_data = bundle.split('_')
-
-    data = {
-        'title': bundle,
-        'step_one': f"{step_data[0]}:{step_data[1]}",
-        'step_two': f"{step_data[1]}:{step_data[2]}",
-        'step_three': f"{step_data[2]}:{step_data[3]}",
-        }
-
+def trading_bundle(request, pk):
+    data = {'title': "Связка Детали"}
     return render(request, 'bundle.html', context=data)

@@ -7,7 +7,8 @@ router = DefaultRouter()
 router = DefaultRouter()
 router.register('list', TradingBundles, basename = 'Bundle')
 router.register('binancelist', TradingBinanceBundles, basename = 'BinanceBundle')
+
 urlpatterns = router.urls
 
 urlpatterns.append(path('dashboard/', trading_dashboard))
-urlpatterns.append(path('bundle/<slug:bundle>/', trading_bundle))
+urlpatterns.append(path('bundle/<int:pk>/', trading_bundle))
