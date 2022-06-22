@@ -23,7 +23,7 @@
                 <tr class="trading_funnel_row">
                     <td>
                         <div style="width:200px; overflow:hidden">
-                        <span class="pair_price">{{ trading_funnel.first_pair.name }}:<br>
+                        <span class="pair_price">{{ trading_funnel.first_pair.name }}({{trading_funnel.first_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.first_pair.price }}</span></span><br>
                         <hr>
                         <span id="price">{{ trading_funnel.start_stop_symbol }} -> {{ trading_funnel.first_step_symbol }}: </span>{{ trading_funnel.first_pair.real_price }}
@@ -35,7 +35,7 @@
                     </td>
                     <td>
                         <div style="width:200px; overflow:hidden">
-                        <span class="pair_price">{{ trading_funnel.second_pair.name }}:<br>
+                        <span class="pair_price">{{ trading_funnel.second_pair.name }}({{trading_funnel.second_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.second_pair.price }}</span></span><br>
                         <hr>
                         <span id="price">{{ trading_funnel.first_step_symbol }} -> {{ trading_funnel.second_step_symbol }}: </span>{{ trading_funnel.second_pair.real_price }}
@@ -48,7 +48,7 @@
 
                     <td>
                         <div style="width:200px; overflow:hidden">
-                        <span class="pair_price">{{ trading_funnel.third_pair.name }}:<br>
+                        <span class="pair_price">{{ trading_funnel.third_pair.name }}({{trading_funnel.third_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.third_pair.price }}</span></span><br>
                         <hr>
                         <span id="price">{{ trading_funnel.second_step_symbol }} -> {{ trading_funnel.start_stop_symbol }}: </span>{{ trading_funnel.third_pair.real_price }}
@@ -68,6 +68,9 @@
                     </td>
                 </tr>
                 </tbody>
+                <ul>
+                    <li v-for="item in trading_funnel.success_list">{{item}}</li>
+                </ul>
                 {% endverbatim %}
             </table>
 

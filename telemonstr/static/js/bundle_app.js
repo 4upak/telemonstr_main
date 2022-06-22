@@ -16,11 +16,18 @@ const app = new Vue({
                 var third_bill = 0
                 var comittion = 0.00075*asset*3
                 var audio = new Audio('/static/sound/mixkit-sci-fi-reject-notification-896.wav');
+
                 audio.play();
 
                 vm.trading_funnel.first_pair.amount = 0
                 vm.trading_funnel.second_pair.amount = 0
                 vm.trading_funnel.third_pair.amount = 0
+
+                vm.trading_funnel.first_pair.flag = 0
+                vm.trading_funnel.second_pair.flag = 0
+                vm.trading_funnel.third_pair.flag = 0
+
+                vm.trading_funnel.success_list = []
 
 
                 let socket_first_step = new ReconnectingWebSocket("wss://stream.binance.com:9443/ws/"+vm.trading_funnel.first_pair.name.toLowerCase()+"@aggTrade");
@@ -33,7 +40,6 @@ const app = new Vue({
                 };
                 socket_first_step.onmessage = function(event) {
                     data = JSON.parse(event.data)
-                    console.log(data)
                     vm.trading_funnel.first_pair.price = data['p']
                     vm.trading_funnel.first_pair.amount += parseFloat(data['q'])
 
@@ -55,10 +61,22 @@ const app = new Vue({
                     vm.trading_funnel.total = vm.trading_funnel.profit_amount - comittion
                     profitability = vm.trading_funnel.total/asset*100
                     vm.trading_funnel.profitability = profitability.toFixed(3)
-                    if (profitability>0){
 
-                        audio.play();
+                    if(profitability>0){
+                        vm.trading_funnel.first_pair.flag = 1
+                        if( vm.trading_funnel.first_pair.flag == 1 && vm.trading_funnel.second_pair.flag == 1 && vm.trading_funnel.third_pair.flag == 1){
+                            audio.play();
+                            vm.trading_funnel.success_list.push(profit_amount)
+                            vm.trading_funnel.first_pair.flag = 0
+                            vm.trading_funnel.second_pair.flag = 0
+                            vm.trading_funnel.third_pair.flag = 0
+                        }
+
                     }
+                    if(profitability<0)
+                        vm.trading_funnel.first_pair.flag = 0
+
+
 
                 };
 
@@ -95,6 +113,19 @@ const app = new Vue({
                     vm.trading_funnel.total = vm.trading_funnel.profit_amount - comittion
                     profitability = vm.trading_funnel.total/asset*100
                     vm.trading_funnel.profitability = profitability.toFixed(3)
+                    if(profitability>0){
+                        vm.trading_funnel.first_pair.flag = 1
+                        if(vm.trading_funnel.first_pair.flag===1 && vm.trading_funnel.second_pair.flag===1 && vm.trading_funnel.third_pair.flag===1){
+                            audio.play();
+                            vm.trading_funnel.success_list.push(profit_amount)
+                            vm.trading_funnel.first_pair.flag = 0
+                            vm.trading_funnel.second_pair.flag = 0
+                            vm.trading_funnel.third_pair.flag = 0
+                        }
+
+                    }
+                    if(profitability<0)
+                        vm.trading_funnel.first_pair.flag = 0
                 };
                 //////////////////////////////////////////////
                 socket_third_step.onopen = function(e) {
@@ -123,6 +154,19 @@ const app = new Vue({
                     vm.trading_funnel.total = vm.trading_funnel.profit_amount - comittion
                     profitability = vm.trading_funnel.total/asset*100
                     vm.trading_funnel.profitability = profitability.toFixed(3)
+                    if(profitability>0){
+                        vm.trading_funnel.first_pair.flag = 1
+                        if(vm.trading_funnel.first_pair.flag===1 && vm.trading_funnel.second_pair.flag===1 && vm.trading_funnel.third_pair.flag===1){
+                            audio.play();
+                            vm.trading_funnel.success_list.push(profit_amount)
+                            vm.trading_funnel.first_pair.flag = 0
+                            vm.trading_funnel.second_pair.flag = 0
+                            vm.trading_funnel.third_pair.flag = 0
+                        }
+
+                    }
+                    if(profitability<0)
+                        vm.trading_funnel.first_pair.flag = 0
                 };
 
 
