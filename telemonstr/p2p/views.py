@@ -11,20 +11,27 @@ from .functions import *
 from .huobi_functions import *
 from .bestchange_functions import *
 import time
+import telegram_send
+
 
 def binance_dashboard(request,fiat, crypto, bank):
     result = []
     result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'binance'))
-    #result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'bybit'))
     result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'huobi'))
-    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'bestchange'))
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'minfin'))
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'whitebit'))
 
-
-
-    data = {'title': "Дашборд",'fiat':fiat,'crypto':crypto, 'data': result}
+    data = {'title': bank,'fiat':fiat,'crypto':crypto, 'data': result}
 
     return render(request, 'p2p.html', context=data)
     #return HttpResponse(json.dumps(result), content_type="application/json")
+def binance_dashboard_json(request,fiat, crypto, bank):
+    result = []
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'binance'))
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'huobi'))
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'minfin'))
+    result.append(exchange_get_dashboard_data(fiat, crypto, bank, 'whitebit'))
+    return HttpResponse(json.dumps(result), content_type="application/json")
 
 def binance_get_currency_list(request, fiat):
     result = get_buy_area(fiat)
@@ -52,3 +59,9 @@ def huobi_dashboard(request,crypto, fiat, bank):
 def bestchange_dashboard(request,crypto, fiat, bank):
     result = count_fiat_bestchange(crypto, fiat, 'sell', bank)
     return HttpResponse(json.dumps(result), content_type="application/json")
+
+def p2p_telegram_message(request):
+    print(vars(request.POST))
+    message = f"{request.POST.get('bundle')} | {request.POST.get('spread')} | {request.POST.get('bank')}"
+    telegram_send.send(messages=[message])
+    return HttpResponse(json.dumps({'status':'ok'}), content_type="application/json")

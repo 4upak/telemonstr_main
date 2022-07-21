@@ -2,95 +2,233 @@
 
 
 {% block content %}
-<div id="active_funnels_app">
+<div id="dashboard_app">
 
-{{ current_url }}
+{% verbatim %}
 
 
+<div class="curr_data_div" >
+
+<table class="table table-striped" >
+  <thead>
+    <tr>
+      <th scope="col">Биржа</th>
+      <th scope="col">База</th>
+      <th scope="col">Результат</th>
+      <th scope="col">Банк</th>
+      <th scope="col">Оптим. курс, {{ fiat }}</th>
+
+    </tr>
+  </thead>
+
+  <tbody v-for="stock in curr_data">
+
+
+      <tr v-for="item in stock" >
+        <td v-if="item.type == 'buy'">{{item.stock}}</td>
+        <td v-if="item.type == 'buy'">{{item.fiat}}</td>
+        <td v-if="item.type == 'buy'">{{item.crypto}}</td>
+        <td v-if="item.type == 'buy'">{{item.bank}}</td>
+        <td v-if="item.type == 'buy'">{{item.optimal.avg_price}} </td>
+
+    </tr>
+
+  </tbody>
+
+
+    <thead>
+    <tr>
+      <th scope="col">Биржа</th>
+      <th scope="col">База</th>
+      <th scope="col">Результат</th>
+      <th scope="col">Банк</th>
+      <th scope="col">Оптим. курс, {{ fiat }}</th>
+
+    </tr>
+  </thead>
+
+  <tbody v-for="stock in curr_data">
+  <tr v-for="item in stock" >
+            <td v-if="item.type == 'sell'">{{item.stock}}</td>
+            <td v-if="item.type == 'sell'">{{item.crypto}}</td>
+            <td v-if="item.type == 'sell'">{{item.fiat}}</td>
+            <td v-if="item.type == 'sell'">{{item.bank}}</td>
+            <td v-if="item.type == 'sell'">{{item.optimal.avg_price}} </td>
+        </tr>
+
+
+  </tbody>
+</table>
+</table>
+
+    <h1>Связки</h1>
+
+    <div class="bundle_1">
+        <h3>binance {{ crypto }} -> {{fiat}} -> binance {{ crypto }}:</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="comittion" placeholder="name@example.com" v-model.lazy="binance_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_2">
+        <h3>binance {{ crypto }} -> {{fiat}} -> Huobi {{ crypto }}:</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="comittion" v-model.lazy="binance_huobi_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_huobi_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_3">
+        <h3>binance {{ crypto }} -> кеш {{ crypto }} -> кеш {{fiat}} -> binance {{ crypto }}</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="comittion" placeholder="name@example.com" v-model.lazy="minfin_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_minfin_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_3_1">
+        <h3>binance {{ crypto }} -> кеш {{fiat}} -> кеш {{ crypto }} -> binance {{ crypto }}</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="comittion" placeholder="name@example.com" v-model.lazy="minfin_binance_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ minfin_binance_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_4">
+        <h3>whitebit {{ crypto }} -> whitebit {{fiat}} -> binance {{ crypto }}:</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="comittion">Комиссия на круге</label>
+                            <input type="text" class="form-control" id="comittion" placeholder="name@example.com" v-model.lazy="binance_whitebit_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_whitebit_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_5">
+        <h3>binance {{ crypto }} -> mono {{fiat}} -> whitebit {{ crypto }}:</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="comittion">Комиссия на круге</label>
+                            <input type="text" class="form-control" id="comittion"  v-model.lazy="binance_mono_whitebit_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_mono_whitebit_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+    <div class="bundle_6" >
+        <h3>binance {{ crypto }} -> privat {{fiat}} -> whitebit {{ crypto }}:</h3>
+        <table class="table table-striped" >
+            <thead>
+                <tr>
+                  <th scope="col">Комиссия на круге</th>
+                  <th scope="col">Спред</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="comittion">Комиссия на круге</label>
+                            <input type="text" class="form-control" id="comittion"  v-model.lazy="binance_privat_whitebit_spread_comittion" style="width:100px">
+                        </div>
+                    </td>
+                    <td class="spread">{{ binance_privat_whitebit_spread }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+{% endverbatim %}
+    <input type="text" id="csrf_tocken" value="{{ csrf_token }}" style="display:none" />
 
 </div>
 
-<h1>BUY {{data.0.0.fiat}} -> {{data.0.0.crypto}}</h1>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Биржа</th>
-      <th scope="col">Крипта</th>
-      <th scope="col">Фиат</th>
-      <th scope="col">Банк</th>
-      <th scope="col">Стакан, {{ crypto }}</th>
-      <th scope="col">Топ5 курс, {{ fiat }}</th>
-      <th scope="col">Спред топ5, {{ fiat }}</th>
-      <th scope="col">Оптим. курс, {{ fiat }}</th>
-      <th scope="col">Спред, {{ fiat }}</th>
-        <th scope="col">Спред %</th>
-
-    </tr>
-  </thead>
-  <tbody>
-  {% for stock in data %}
-    {% for item in stock %}
-        {% if item.type == 'sell' %}
-        <tr>
-            <td>{{item.stock}}</td>
-            <td>{{item.crypto}}</td>
-            <td>{{item.fiat}}</td>
-            <td>{{item.bank}}</td>
-            <td>{{item.avg.total_crypto}} </td>
-            <td>{{item.top5.avg_price}} </td>
-            <td>{{item.spread_top5}} </td>
-            <td>{{item.optimal.avg_price}} </td>
-            <td>{{item.spread}} </td>
-            <td>{{item.spread_percent}} %</td>
-        </tr>
-        {% endif %}
-    {% endfor %}
-  {% endfor %}
-  </tbody>
-</table>
-
-<h1>SELL {{data.0.0.crypto}} -> {{data.0.0.fiat}}</h1>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Биржа</th>
-      <th scope="col">Крипта</th>
-      <th scope="col">Фиат</th>
-      <th scope="col">Банк</th>
-      <th scope="col">Стакан, {{ crypto }}</th>
-      <th scope="col">Топ5 курс, {{ fiat }}</th>
-      <th scope="col">Спред топ5, {{ fiat }}</th>
-      <th scope="col">Оптим. курс, {{ fiat }}</th>
-      <th scope="col">Спред, {{ fiat }}</th>
-        <th scope="col">Спред %</th>
-
-    </tr>
-  </thead>
-  <tbody>
-  {% for stock in data %}
-    {% for item in stock %}
-        {% if item.type == 'buy' %}
-        <tr>
-            <td>{{item.stock}}</td>
-            <td>{{item.crypto}}</td>
-            <td>{{item.fiat}}</td>
-            <td>{{item.bank}}</td>
-            <td>{{item.avg.total_crypto}} </td>
-            <td>{{item.top5.avg_price}} </td>
-            <td>{{item.spread_top5}} </td>
-            <td>{{item.optimal.avg_price}} </td>
-            <td>{{item.spread}} </td>
-            <td>{{item.spread_percent}} %</td>
-        </tr>
-        {% endif %}
-    {% endfor %}
-  {% endfor %}
-  </tbody>
-</table>
-
 {% endblock %}
 {% block javascript %}
-
+<script src="/static/js/p2p_dashboard_app.js"></script>
 
 
 

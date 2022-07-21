@@ -74,7 +74,7 @@ def count_fiat_huobi(crypto_label,fiat_label,type,payment_method):
         'type': type,
         'bank': payment_method,
         'avg': huobi_count_stock_glass(bybit_answer['data']),
-        'optimal': huobi_count_stock_glass(bybit_answer['data'][6:]),
+        'optimal': huobi_count_stock_glass(bybit_answer['data'][:5]),
         'top5': huobi_count_stock_glass(bybit_answer['data'][:5])
     }
 

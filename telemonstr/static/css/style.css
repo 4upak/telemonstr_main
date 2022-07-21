@@ -134,3 +134,10 @@ padding-left:0px
 cursor:pointer
 }
 .actions span{display:none}
+#bundle_app input[type=text]{
+wodth:150px
+}
+td.spread{
+font-size:30px;
+font-weight:bold;
+}

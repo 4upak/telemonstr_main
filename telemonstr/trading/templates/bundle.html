@@ -7,7 +7,43 @@
 <br>
 {{step_three}}<br>
 <div id="bundle_app">
+{% verbatim %}
+<form>
+    <table width="100%">
+        <thead class="thead-dark">
+                <tr>
 
+                    <th scope="col">Asset</th>
+                    <th scope="col">Comissiom</th>
+                    <th scope="col">Minimal Profitability</th>
+
+                </tr>
+                </thead>
+        <tbody>
+        <tr>
+            <td>
+                <div class="form-group">
+
+                <input type="text" v-model="asset" class="form-control" id="asset" placeholder="Example input">
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+
+                    <input type="text" v-model="comittion_val" class="form-control" id="comission" placeholder="Example input">
+                </div>
+            </td>
+            <td>
+              <div class="form-group">
+
+                <input type="text" v-model="min_profitability" class="form-control" id="profitability" placeholder="Another input">
+              </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</form>
     <table class="table">
                 <thead class="thead-dark">
                 <tr>
@@ -18,7 +54,7 @@
                     <th scope="col">Profitability, %</th>
                 </tr>
                 </thead>
-                {% verbatim %}
+
                 <tbody>
                 <tr class="trading_funnel_row">
                     <td>
@@ -26,24 +62,47 @@
                         <span class="pair_price">{{ trading_funnel.first_pair.name }}({{trading_funnel.first_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.first_pair.price }}</span></span><br>
                         <hr>
-                        <span id="price">{{ trading_funnel.start_stop_symbol }} -> {{ trading_funnel.first_step_symbol }}: </span>{{ trading_funnel.first_pair.real_price }}
+                        <span id="price">{{ trading_funnel.start_stop_symbol }} -> {{ trading_funnel.first_step_symbol }}:<br> </span>{{ trading_funnel.first_pair.real_price }}
                         <hr>
                         {{ trading_funnel.first_bill }}{{ trading_funnel.first_step_symbol }}
                         <hr>
-                        Объем: {{ trading_funnel.first_pair.amount }} {{ trading_funnel.first_pair.base_asset }}
+                        Объем: <br>{{ trading_funnel.first_pair.time_amount }} <br>{{ trading_funnel.first_pair.base_asset }}/сек
                         </div>
+                        <hr>
+                        <div v-if="trading_funnel.first_pair.socket_flag === 1">
+                            Сокет подключен: {{trading_funnel.first_pair.socket_connection_duration}} сек
+                        </div>
+                        <hr>
+                        <div v-if="trading_funnel.first_pair.position_flag === 1">
+                            Позиция: {{trading_funnel.first_pair.position_amount}} {{ trading_funnel.first_pair.base_asset }}
+                        </div>
+                        <ul>
+                            <li v-for="order in trading_funnel.first_pair.orders">{{ order }}</li>
+                        </ul>
+
                     </td>
                     <td>
                         <div style="width:200px; overflow:hidden">
                         <span class="pair_price">{{ trading_funnel.second_pair.name }}({{trading_funnel.second_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.second_pair.price }}</span></span><br>
                         <hr>
-                        <span id="price">{{ trading_funnel.first_step_symbol }} -> {{ trading_funnel.second_step_symbol }}: </span>{{ trading_funnel.second_pair.real_price }}
+                        <span id="price">{{ trading_funnel.first_step_symbol }} -> {{ trading_funnel.second_step_symbol }}:<br> </span>{{ trading_funnel.second_pair.real_price }}
                         <hr>
                         {{ trading_funnel.second_bill }}{{ trading_funnel.second_step_symbol }}
                         <hr>
-                        Объем: {{ trading_funnel.second_pair.amount }} {{ trading_funnel.second_pair.base_asset }}
+                        Объем: <br>{{ trading_funnel.second_pair.time_amount }} <br>{{ trading_funnel.second_pair.base_asset }}/сек
                         </div>
+                        <hr>
+                        <div v-if="trading_funnel.second_pair.socket_flag === 1">
+                            Сокет подключен: {{trading_funnel.second_pair.socket_connection_duration}} сек
+                        </div>
+                        <hr>
+                        <div v-if="trading_funnel.second_pair.position_flag === 1">
+                            Позиция: {{trading_funnel.second_pair.position_amount}} {{ trading_funnel.second_pair.base_asset }}
+                        </div>
+                        <ul>
+                            <li v-for="order in trading_funnel.second_pair.orders">{{ order }}</li>
+                        </ul>
                     </td>
 
                     <td>
@@ -51,12 +110,24 @@
                         <span class="pair_price">{{ trading_funnel.third_pair.name }}({{trading_funnel.third_pair.flag}}):<br>
                             <span class="pair_price_value">{{ trading_funnel.third_pair.price }}</span></span><br>
                         <hr>
-                        <span id="price">{{ trading_funnel.second_step_symbol }} -> {{ trading_funnel.start_stop_symbol }}: </span>{{ trading_funnel.third_pair.real_price }}
+                        <span id="price">{{ trading_funnel.second_step_symbol }} -> {{ trading_funnel.start_stop_symbol }}:<br> </span>{{ trading_funnel.third_pair.real_price }}
                         <hr>
                         {{ trading_funnel.third_bill }}*{{ trading_funnel.start_stop_symbol }}
                         <hr>
-                        Объем: {{ trading_funnel.third_pair.amount }} {{ trading_funnel.third_pair.base_asset }}
+                        Объем: <br>{{ trading_funnel.third_pair.time_amount }} <br>{{ trading_funnel.third_pair.base_asset }}/сек
                         </div>
+                        <hr>
+                        <div v-if="trading_funnel.third_pair.socket_flag === 1">
+                            Сокет подключен: {{trading_funnel.third_pair.socket_connection_duration}} сек
+                        </div>
+                        <hr>
+                        <div v-if="trading_funnel.third_pair.position_flag === 1">
+                            Позиция: {{trading_funnel.third_pair.position_amount}} {{ trading_funnel.third_pair.base_asset }}
+                        </div>
+                        <ul>
+                            <li v-for="order in trading_funnel.third_pair.orders">{{ order }}</li>
+                        </ul>
+
                     </td>
 
                     <td>
@@ -65,14 +136,24 @@
                             comittion:{{trading_funnel.comittion}}<br>
                             profitability:{{ trading_funnel.profitability }}
                         </div>
+                        <hr>
+                        <div style="width:200px; overflow:hidden">
+                            Trade count: {{ trading_funnel.success_count }}<br>
+                            Total result: {{ trading_funnel.success_result }}<br>
+                            Total avg result: {{ trading_funnel.success_avg_result }}<br>
+                            Total percent result: {{ trading_funnel.total_percent_result }}<br>
+                        </div>
+
                     </td>
                 </tr>
                 </tbody>
-                <ul>
-                    <li v-for="item in trading_funnel.success_list">{{item}}</li>
-                </ul>
-                {% endverbatim %}
+
+
             </table>
+    <ul>
+        <li v-for="item in trading_funnel.success_list">{{item}}%</li>
+    </ul>
+    {% endverbatim %}
 
 </div>
 

@@ -4,6 +4,8 @@ from requests.structures import CaseInsensitiveDict
 from .huobi_functions import *
 from .bybit_functions import *
 from .bestchange_functions import *
+from .minfin_functions import *
+from .whitebit_functions import *
 
 
 def count_stock_glas(data):
@@ -100,17 +102,26 @@ def exchange_get_dashboard_data(fiat, crypto, bank, stock):
         buy_data = count_fiat(crypto, fiat, 'buy', bank)
         sell_data = count_fiat(crypto, fiat, 'sell', bank)
 
-    if stock == "bybit":
+    '''if stock == "bybit":
         buy_data = count_fiat_bybit(crypto, fiat, 'buy', bank)
-        sell_data = count_fiat_bybit(crypto, fiat, 'sell', bank)
+        sell_data = count_fiat_bybit(crypto, fiat, 'sell', bank)'''
 
     if stock == "huobi":
         buy_data = count_fiat_huobi(crypto, fiat, 'buy', bank)
         sell_data = count_fiat_huobi(crypto, fiat, 'sell', bank)
 
-    if stock == "bestchange":
+    '''if stock == "bestchange":
         buy_data = count_fiat_bestchange(crypto, fiat, 'buy', bank)
-        sell_data = count_fiat_bestchange(crypto, fiat, 'sell', bank)
+        sell_data = count_fiat_bestchange(crypto, fiat, 'sell', bank)'''
+
+    if stock == "minfin":
+        buy_data = count_fiat_minfin_new('buy')
+        sell_data = count_fiat_minfin_new('sell')
+
+    if stock == "whitebit":
+        buy_data = count_fiat_whitebit(crypto, fiat, 'buy')
+        sell_data = count_fiat_whitebit(crypto, fiat, 'sell')
+
 
     spread = round(buy_data['optimal']['avg_price'] - sell_data['optimal']['avg_price'], 2)
     spread_top5 = round(buy_data['top5']['avg_price'] - sell_data['top5']['avg_price'], 2)
